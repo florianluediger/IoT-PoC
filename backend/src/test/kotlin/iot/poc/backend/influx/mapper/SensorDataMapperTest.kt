@@ -3,6 +3,7 @@ package iot.poc.backend.influx.mapper
 import iot.poc.backend.dto.SensorData
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
 import java.time.Instant
 import java.util.*
 
@@ -17,7 +18,7 @@ internal class SensorDataMapperTest {
         val tagKey = "sensorId"
         val tagValue = "4711"
         val fieldKey = "temperature"
-        val fieldValue = 20L
+        val fieldValue = BigDecimal.valueOf(20)
         val input = SensorData(
             type,
             timestamp,

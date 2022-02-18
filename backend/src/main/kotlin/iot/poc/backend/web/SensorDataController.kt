@@ -1,17 +1,40 @@
 package iot.poc.backend.web
 
 import iot.poc.backend.dto.SensorData
-import iot.poc.backend.persistence.service.PersistenceService
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import iot.poc.backend.service.SensorService
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
+import java.math.BigDecimal
+import java.time.Instant
+import javax.servlet.http.HttpServletRequest
 
 @RestController
 @RequestMapping("/sensor")
-class SensorDataController(private val persistenceService: PersistenceService) {
+class SensorDataController(val sensorService: SensorService) {
+
+    val nonTagParametersForAverageSensorData = listOf("intervalStart", "intervalEnd", "sensorType")
+
     @PostMapping
     fun createSensorData(@RequestBody data: SensorData) {
-        persistenceService.saveMeasurement(data)
+        sensorService.saveMeasurement(data)
     }
+
+    @GetMapping("average")
+    fun calculateAverageSensorValue(
+        @RequestParam(required = true) intervalStart: Instant,
+        @RequestParam(required = true) intervalEnd: Instant,
+        @RequestParam(required = true) sensorType: String,
+        request: HttpServletRequest
+    ): ResponseEntity<BigDecimal> {
+        val tags = request.parameterMap
+            .filterValues { it.size == 1 }
+            .mapValues { it.value[0] }
+            .filterKeys { nonTagParametersForAverageSensorData.contains(it) }
+
+        val averageValue =
+            sensorService.calculateAverageSensorValue(intervalStart, intervalEnd, sensorType, tags)
+
+        return ResponseEntity.ok(averageValue)
+    }
+
 }
