@@ -26,8 +26,9 @@ internal class SensorDataMapperTest {
             Collections.singletonMap(fieldKey, fieldValue)
         )
 
+        Locale.setDefault(Locale.US) // needed so the decimal point is a dot instead of a comma
         val expectedResult =
-            "%s,%s=%s %s=%di %d".format(type, tagKey, tagValue, fieldKey, fieldValue, timestamp.epochSecond)
+            "%s,%s=%s %s=%.1f %d".format(type, tagKey, tagValue, fieldKey, fieldValue.toFloat(), timestamp.epochSecond)
 
         val result = sensorDataMapper.mapSensorDataToPoint(input)
 
