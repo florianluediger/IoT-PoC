@@ -1,4 +1,4 @@
-package iot.poc.backend.dto
+package iot.poc.backend.persistence.entity
 
 import java.math.BigDecimal
 import java.time.Instant

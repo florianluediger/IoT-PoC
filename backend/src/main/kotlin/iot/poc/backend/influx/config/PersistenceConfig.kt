@@ -21,7 +21,7 @@ class PersistenceConfig {
     }
 
     @Bean
-    fun queryCreationService(): QueryCreationService {
-        return InfluxQueryCreationService()
+    fun queryCreationService(influxProperties: InfluxProperties): QueryCreationService {
+        return InfluxQueryCreationService(influxProperties)
     }
 }

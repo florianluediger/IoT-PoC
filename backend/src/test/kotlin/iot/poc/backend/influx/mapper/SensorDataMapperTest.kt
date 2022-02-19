@@ -1,6 +1,6 @@
 package iot.poc.backend.influx.mapper
 
-import iot.poc.backend.dto.SensorData
+import iot.poc.backend.persistence.entity.SensorData
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal

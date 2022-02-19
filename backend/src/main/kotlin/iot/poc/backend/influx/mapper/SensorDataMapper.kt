@@ -2,7 +2,7 @@ package iot.poc.backend.influx.mapper
 
 import com.influxdb.client.domain.WritePrecision
 import com.influxdb.client.write.Point
-import iot.poc.backend.dto.SensorData
+import iot.poc.backend.persistence.entity.SensorData
 import org.springframework.stereotype.Component
 
 @Component

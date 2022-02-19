@@ -1,7 +1,7 @@
 package iot.poc.backend.influx.repository
 
 import com.influxdb.client.kotlin.InfluxDBClientKotlin
-import iot.poc.backend.dto.SensorData
+import iot.poc.backend.persistence.entity.SensorData
 import iot.poc.backend.influx.config.InfluxProperties
 import iot.poc.backend.influx.mapper.SensorDataMapper
 import iot.poc.backend.persistence.repository.SensorRepository

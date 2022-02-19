@@ -1,7 +1,7 @@
-package iot.poc.backend.web
+package iot.poc.backend.sensor.web
 
-import iot.poc.backend.dto.SensorData
-import iot.poc.backend.service.SensorService
+import iot.poc.backend.persistence.entity.SensorData
+import iot.poc.backend.sensor.service.SensorService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal

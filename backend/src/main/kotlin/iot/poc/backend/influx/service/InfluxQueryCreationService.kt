@@ -1,9 +1,10 @@
 package iot.poc.backend.influx.service
 
+import iot.poc.backend.influx.config.InfluxProperties
 import iot.poc.backend.persistence.service.QueryCreationService
 import java.time.Instant
 
-class InfluxQueryCreationService : QueryCreationService {
+class InfluxQueryCreationService(val influxProperties: InfluxProperties) : QueryCreationService {
     override fun createAggregateQuery(
         sensorType: String,
         intervalStart: Instant,

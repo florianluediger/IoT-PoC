@@ -1,6 +1,6 @@
 package iot.poc.backend.persistence.repository
 
-import iot.poc.backend.dto.SensorData
+import iot.poc.backend.persistence.entity.SensorData
 import java.math.BigDecimal
 
 interface SensorRepository {

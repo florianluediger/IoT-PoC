@@ -1,6 +1,6 @@
-package iot.poc.backend.service
+package iot.poc.backend.sensor.service
 
-import iot.poc.backend.dto.SensorData
+import iot.poc.backend.persistence.entity.SensorData
 import iot.poc.backend.persistence.repository.SensorRepository
 import iot.poc.backend.persistence.service.QueryCreationService
 import org.springframework.stereotype.Service
