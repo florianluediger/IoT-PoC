@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 class SensorDataMapper {
     fun mapSensorDataToPoint(data: SensorData): Point {
         return Point.measurement(data.sensorType)
-            .time(data.timestamp.epochSecond, WritePrecision.S)
+            .time(data.timestamp, WritePrecision.S)
             .addTags(data.tags)
             .addFields(data.values)
     }
