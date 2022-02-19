@@ -29,7 +29,7 @@ class SensorDataController(val sensorService: SensorService) {
         val tags = request.parameterMap
             .filterValues { it.size == 1 }
             .mapValues { it.value[0] }
-            .filterKeys { nonTagParametersForAverageSensorData.contains(it) }
+            .filterKeys { !nonTagParametersForAverageSensorData.contains(it) }
 
         val averageValue =
             sensorService.calculateAverageSensorValue(intervalStart, intervalEnd, sensorType, tags)
