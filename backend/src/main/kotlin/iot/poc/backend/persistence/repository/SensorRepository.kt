@@ -1,4 +1,4 @@
-package iot.poc.backend.persistence.service
+package iot.poc.backend.persistence.repository
 
 import iot.poc.backend.dto.SensorData
 import java.math.BigDecimal

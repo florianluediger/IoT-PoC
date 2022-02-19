@@ -2,12 +2,10 @@ package iot.poc.backend.influx.config
 
 import com.influxdb.client.kotlin.InfluxDBClientKotlin
 import iot.poc.backend.influx.mapper.SensorDataMapper
-import iot.poc.backend.influx.service.InfluxAggregateQueryBuilder
-import iot.poc.backend.influx.service.InfluxAggregateQueryBuilderFactory
-import iot.poc.backend.influx.service.InfluxSensorRepository
-import iot.poc.backend.persistence.service.AggregateQueryBuilder
-import iot.poc.backend.persistence.service.AggregateQueryBuilderFactory
-import iot.poc.backend.persistence.service.SensorRepository
+import iot.poc.backend.influx.service.InfluxQueryCreationService
+import iot.poc.backend.influx.repository.InfluxSensorRepository
+import iot.poc.backend.persistence.service.QueryCreationService
+import iot.poc.backend.persistence.repository.SensorRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -23,12 +21,7 @@ class PersistenceConfig {
     }
 
     @Bean
-    fun queryBuilder(): AggregateQueryBuilder {
-        return InfluxAggregateQueryBuilder()
-    }
-
-    @Bean
-    fun queryBuilderFactory(influxProperties: InfluxProperties): AggregateQueryBuilderFactory {
-        return InfluxAggregateQueryBuilderFactory(influxProperties)
+    fun queryCreationService(): QueryCreationService {
+        return InfluxQueryCreationService()
     }
 }
