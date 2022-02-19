@@ -12,6 +12,15 @@ class InfluxQueryCreationService(val influxProperties: InfluxProperties) : Query
         tags: Map<String, String>,
         operation: String
     ): String {
-        TODO("Not yet implemented")
+        val queryBuilder = StringBuilder()
+        queryBuilder.append("from(bucket: \"${influxProperties.bucket}\")")
+        queryBuilder.append("|> range(start: $intervalStart, stop: $intervalEnd)")
+        queryBuilder.append("|> filter(fn: (r) => r._measurement == \"$sensorType\")")
+        tags.forEach {
+            queryBuilder.append("|> filter(fn: (r) => r.${it.key} == \"${it.value}\")")
+        }
+        queryBuilder.append("|> $operation()")
+
+        return queryBuilder.toString()
     }
 }
