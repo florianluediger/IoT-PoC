@@ -4,6 +4,7 @@ import com.influxdb.client.kotlin.InfluxDBClientKotlin
 import iot.poc.backend.influx.config.InfluxProperties
 import iot.poc.backend.influx.mapper.InfluxSensorDataMapper
 import iot.poc.backend.persistence.entity.SensorData
+import iot.poc.backend.persistence.exception.PersistenceException
 import iot.poc.backend.persistence.repository.SensorRepository
 import kotlinx.coroutines.runBlocking
 import java.math.BigDecimal
@@ -22,12 +23,17 @@ class InfluxSensorRepository(
     }
 
     override fun getValueForAggregateQuery(query: String): BigDecimal {
-        val resultStream = influxDB.getQueryKotlinApi().query(query, influxProperties.org)
-        val resultValue = runBlocking {
-            resultStream.receive().value
+        val resultIterator = influxDB.getQueryKotlinApi().query(query, influxProperties.org).iterator()
+
+        val result = runBlocking {
+            if (resultIterator.hasNext())
+                resultIterator.next()
+            else
+                throw PersistenceException("No matching entities could be found.")
         }
+        val resultValue = result.value
         if (resultValue is Double)
             return BigDecimal.valueOf(resultValue)
-        return BigDecimal.ZERO
+        throw PersistenceException("The result from the database could not be interpreted correctly.")
     }
 }

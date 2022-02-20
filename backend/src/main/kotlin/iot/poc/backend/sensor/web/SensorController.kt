@@ -1,5 +1,6 @@
 package iot.poc.backend.sensor.web
 
+import iot.poc.backend.persistence.exception.PersistenceException
 import iot.poc.backend.sensor.dto.SensorInput
 import iot.poc.backend.sensor.service.SensorService
 import org.springframework.http.ResponseEntity
@@ -34,6 +35,14 @@ class SensorController(val sensorService: SensorService) {
             sensorService.calculateAverageSensorValue(sensorId, intervalStart, intervalEnd, sensorType, valueName, tags)
 
         return ResponseEntity.ok(averageValue)
+    }
+
+    @ExceptionHandler(value = [(PersistenceException::class)])
+    fun handlePersistenceException(
+        exception: PersistenceException,
+        request: HttpServletRequest
+    ): ResponseEntity<String> {
+        return ResponseEntity.badRequest().body(exception.message)
     }
 
     private fun extractTagsFromRequestParams(parameterMap: Map<String, Array<String>>): Map<String, String> {
