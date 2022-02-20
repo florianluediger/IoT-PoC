@@ -6,7 +6,7 @@ import iot.poc.backend.persistence.entity.SensorData
 import org.springframework.stereotype.Component
 
 @Component
-class SensorDataMapper {
+class InfluxSensorDataMapper {
     fun mapSensorDataToPoint(data: SensorData): Point {
         return Point.measurement(data.sensorType)
             .time(data.timestamp, WritePrecision.S)

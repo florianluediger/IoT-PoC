@@ -9,6 +9,7 @@ class InfluxQueryCreationService(val influxProperties: InfluxProperties) : Query
         sensorType: String,
         intervalStart: Instant,
         intervalEnd: Instant,
+        valueName: String,
         tags: Map<String, String>,
         operation: String
     ): String {
@@ -16,6 +17,7 @@ class InfluxQueryCreationService(val influxProperties: InfluxProperties) : Query
         queryBuilder.append("from(bucket: \"${influxProperties.bucket}\")")
         queryBuilder.append("|> range(start: $intervalStart, stop: $intervalEnd)")
         queryBuilder.append("|> filter(fn: (r) => r._measurement == \"$sensorType\")")
+        queryBuilder.append("|> filter(fn: (r) => r._field == \"$valueName\")")
         tags.forEach {
             queryBuilder.append("|> filter(fn: (r) => r.${it.key} == \"${it.value}\")")
         }

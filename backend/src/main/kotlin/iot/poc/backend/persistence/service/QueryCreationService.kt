@@ -7,6 +7,7 @@ interface QueryCreationService {
         sensorType: String,
         intervalStart: Instant,
         intervalEnd: Instant,
+        valueName: String,
         tags: Map<String, String>,
         operation: String
     ): String

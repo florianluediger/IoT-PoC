@@ -15,16 +15,25 @@ import java.time.Instant
 @Service
 class ScheduledRequestService(val httpClient: HttpClient) {
 
+    object SensorParameters {
+        val sensorId = "4711"
+        val sensorType = "temperature"
+        val tags = emptyMap<String, String>()
+        val valueName = "temperature"
+        val temperatureDifferenceScale = 10
+        val initialTemperature = BigDecimal.valueOf(20)
+    }
+
     @Value("\${backend.uri}")
     lateinit var backendUri: String
 
-    var previousTemperature = BigDecimal.valueOf(20)
+    var previousTemperature = SensorParameters.initialTemperature
 
     val objectMapper = ObjectMapper().findAndRegisterModules()
 
     @Scheduled(fixedDelay = 1000)
     fun sendRequestEverySecond() {
-        val uri = "$backendUri/sensor"
+        val uri = "$backendUri/sensor/${SensorParameters.sensorId}"
         val bodyAsString = objectMapper.writeValueAsString(createMockData())
         val request = HttpRequest.newBuilder()
             .uri(URI(uri))
@@ -35,14 +44,12 @@ class ScheduledRequestService(val httpClient: HttpClient) {
     }
 
     fun createMockData(): SensorData {
-        val sensorType = "temperature"
-        val tags = mapOf(Pair("sensorId", "4711"))
-        val values = mapOf(Pair("temperature", generateTemperatureValue()))
-        return SensorData(sensorType, Instant.now(), tags, values)
+        val values = mapOf(SensorParameters.valueName to generateTemperatureValue())
+        return SensorData(SensorParameters.sensorType, Instant.now(), SensorParameters.tags, values)
     }
 
     fun generateTemperatureValue(): BigDecimal {
-        val temperatureDifference = (Math.random() - 0.5) / 10
+        val temperatureDifference = (Math.random() - 0.5) / SensorParameters.temperatureDifferenceScale
         val newTemperature = previousTemperature.add(BigDecimal.valueOf(temperatureDifference))
         previousTemperature = newTemperature
         return newTemperature

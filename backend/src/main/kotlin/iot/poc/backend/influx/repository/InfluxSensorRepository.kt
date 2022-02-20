@@ -2,7 +2,7 @@ package iot.poc.backend.influx.repository
 
 import com.influxdb.client.kotlin.InfluxDBClientKotlin
 import iot.poc.backend.influx.config.InfluxProperties
-import iot.poc.backend.influx.mapper.SensorDataMapper
+import iot.poc.backend.influx.mapper.InfluxSensorDataMapper
 import iot.poc.backend.persistence.entity.SensorData
 import iot.poc.backend.persistence.repository.SensorRepository
 import kotlinx.coroutines.runBlocking
@@ -11,11 +11,11 @@ import java.math.BigDecimal
 class InfluxSensorRepository(
     private val influxDB: InfluxDBClientKotlin,
     private val influxProperties: InfluxProperties,
-    private val sensorDataMapper: SensorDataMapper
+    private val influxSensorDataMapper: InfluxSensorDataMapper
 ) : SensorRepository {
 
     override fun saveMeasurement(data: SensorData) {
-        val pointData = sensorDataMapper.mapSensorDataToPoint(data)
+        val pointData = influxSensorDataMapper.mapSensorDataToPoint(data)
         runBlocking {
             influxDB.getWriteKotlinApi().writePoint(pointData, influxProperties.bucket, influxProperties.org)
         }

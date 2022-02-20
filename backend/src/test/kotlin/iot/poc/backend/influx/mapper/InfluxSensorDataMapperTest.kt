@@ -7,9 +7,9 @@ import java.math.BigDecimal
 import java.time.Instant
 import java.util.*
 
-internal class SensorDataMapperTest {
+internal class InfluxSensorDataMapperTest {
 
-    private val sensorDataMapper: SensorDataMapper = SensorDataMapper()
+    private val influxSensorDataMapper = InfluxSensorDataMapper()
 
     @Test
     internal fun mapSensorDataToPoint_shouldCreatePoint_whenCompleteDataIsProvided() {
@@ -30,7 +30,7 @@ internal class SensorDataMapperTest {
         val expectedResult =
             "%s,%s=%s %s=%.1f %d".format(type, tagKey, tagValue, fieldKey, fieldValue.toFloat(), timestamp.epochSecond)
 
-        val result = sensorDataMapper.mapSensorDataToPoint(input)
+        val result = influxSensorDataMapper.mapSensorDataToPoint(input)
 
         assertThat(result.toLineProtocol()).isEqualTo(expectedResult)
     }
@@ -38,7 +38,7 @@ internal class SensorDataMapperTest {
     @Test
     internal fun mapSensorDataToPoint_shouldCreateEmptyPoint_whenProvidedDataIsEmpty() {
         val input = SensorData("", Instant.MIN, Collections.emptyMap(), Collections.emptyMap())
-        val result = sensorDataMapper.mapSensorDataToPoint(input)
+        val result = influxSensorDataMapper.mapSensorDataToPoint(input)
         val expectedResult = ""
         assertThat(result.toLineProtocol()).isEqualTo(expectedResult)
     }
